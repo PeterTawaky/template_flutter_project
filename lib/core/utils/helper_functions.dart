@@ -8,6 +8,12 @@ import 'package:template_project/core/services/cache/cache_keys.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelperFunctions {
+  static Size getDesignSize(double width) {
+    if (width >= 1024) return const Size(1440, 1024); // Desktop design
+    if (width >= 600) return const Size(800, 1280); // Tablet design
+    return const Size(360, 690); // Mobile design
+  }
+
   static void showSnackBar({
     Color color = AppColors.bottomEllipseGrey,
     required String msg,
@@ -162,5 +168,4 @@ class HelperFunctions {
   static List<T> filterList<T>(List<T> list, bool Function(T) test) {
     return list.where(test).toList();
   }
-  
 }
