@@ -18,8 +18,8 @@ class SqlDb {
     String path = join(databasepath, 'wael.db');
     Database mydb = await openDatabase(
       path,
-      onCreate: _onCreate,
-      version: 3,
+      onCreate: _onCreate, //for creating the database just once
+      version: 1,
       onUpgrade: _onUpgrade,
     );
     return mydb;

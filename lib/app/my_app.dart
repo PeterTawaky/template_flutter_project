@@ -4,6 +4,8 @@ import 'package:template_project/core/routes/router_generator.dart';
 import 'package:template_project/core/utils/helper_functions.dart';
 import 'package:template_project/core/utils/themes/app_themes.dart';
 
+import '../core/utils/helper_functions.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

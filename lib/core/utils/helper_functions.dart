@@ -2,32 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:template_project/core/constants/app_colors.dart';
 import 'package:template_project/core/services/cache/cache_helper.dart';
 import 'package:template_project/core/services/cache/cache_keys.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelperFunctions {
-  static Size getDesignSize(double width) {
-    if (width >= 1024) return const Size(1440, 1024); // Desktop design
-    if (width >= 600) return const Size(800, 1280); // Tablet design
-    return const Size(360, 690); // Mobile design
-  }
-
-  static void showSnackBar({
-    Color color = AppColors.bottomEllipseGrey,
-    required String msg,
-    required BuildContext context,
-  }) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-        duration: const Duration(seconds: 5),
-        backgroundColor: color,
-      ),
-    );
-  }
-
   static double getRandomDoubleNumber(int maxLimit) {
     Random random = Random();
     double raw = random.nextDouble() * maxLimit; // 0.0 to 5.0
@@ -120,52 +99,5 @@ class HelperFunctions {
     strength += (varietyCount * 0.15);
 
     return strength.clamp(0, 1);
-  }
-
-  Widget buildPasswordStrengthIndicator({required double strength}) {
-    return LinearProgressIndicator(
-      value: strength,
-      backgroundColor: Colors.grey[300],
-      color: _getStrengthColor(strength: strength),
-      minHeight: 6,
-    );
-  }
-
-  Widget buildPasswordStrengthText({required double strength}) {
-    String text;
-    if (strength == 0) {
-      text = '';
-    } else if (strength < 0.3) {
-      text = 'Weak';
-    } else if (strength < 0.6) {
-      text = 'Fair';
-    } else if (strength < 0.8) {
-      text = 'Good';
-    } else {
-      text = 'Strong';
-    }
-
-    return Text(
-      text,
-      style: TextStyle(
-        color: _getStrengthColor(strength: strength),
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
-
-  Color _getStrengthColor({required double strength}) {
-    if (strength < 0.3) return Colors.red;
-    if (strength < 0.6) return Colors.orange;
-    if (strength < 0.8) return Colors.blue;
-    return Colors.green;
-  }
-
-  static removeDuplicates({required List<dynamic> list}) {
-    return list.toSet().toList();
-  }
-
-  static List<T> filterList<T>(List<T> list, bool Function(T) test) {
-    return list.where(test).toList();
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:template_project/core/constants/app_colors.dart';
 
 Widget bottomEllipse({required num width}) {
   return Container(
@@ -7,7 +6,7 @@ Widget bottomEllipse({required num width}) {
     height: 5,
     margin: EdgeInsets.only(bottom: 10),
     decoration: BoxDecoration(
-      color: AppColors.bottomEllipseGrey,
+      color: Colors.grey[400],
       borderRadius: BorderRadius.circular(10),
     ),
   );

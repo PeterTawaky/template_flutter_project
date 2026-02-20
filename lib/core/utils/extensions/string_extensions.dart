@@ -1,7 +1,10 @@
-class AppValidator {
-  AppValidator._();
+// validation_extensions.dart
 
-  static String? validateEmailCreation(String? value) {
+/// Email validation, as extensions on `String?`
+extension EmailValidationX on String? {
+  /// Returns an error message if invalid; `null` if valid.
+  String? validateEmailCreation() {
+    final value = this;
     if (value == null || value.isEmpty) {
       return 'Please enter your email address';
     }
@@ -9,22 +12,22 @@ class AppValidator {
     // Trim the value
     final email = value.trim();
 
-    // Check for basic email pattern
+    // Basic email pattern (kept from your original logic)
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
       return 'Please enter a valid email address';
     }
 
-    // Check for spaces in the email
+    // No spaces
     if (email.contains(' ')) {
       return 'Email should not contain spaces';
     }
 
-    // Check for multiple @ symbols
+    // Only one '@'
     if ('@'.allMatches(email).length > 1) {
       return 'Email should contain only one @ symbol';
     }
 
-    // Check domain validity
+    // Domain validity
     final parts = email.split('@');
     if (parts.length != 2) return 'Invalid email format';
 
@@ -33,17 +36,17 @@ class AppValidator {
       return 'Domain part is missing';
     }
 
-    // Check for valid domain extension
+    // Valid domain extension
     if (!RegExp(r'^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(domain)) {
       return 'Invalid domain format';
     }
 
-    // Check for consecutive dots
+    // No consecutive dots
     if (domain.contains('..')) {
       return 'Domain should not contain consecutive dots';
     }
 
-    // Check for top-level domain length
+    // TLD length
     final domainParts = domain.split('.');
     if (domainParts.length < 2) {
       return 'Invalid domain structure';
@@ -54,7 +57,7 @@ class AppValidator {
       return 'Top-level domain should be at least 2 characters';
     }
 
-    // Check for common disposable email domains
+    // Disposable domains check
     const disposableDomains = [
       'tempmail.com',
       'mailinator.com',
@@ -63,108 +66,102 @@ class AppValidator {
       'throwawaymail.com',
       'fakeinbox.com',
     ];
-
     if (disposableDomains.any((d) => domain.toLowerCase().contains(d))) {
       return 'Disposable email addresses are not allowed';
     }
 
-    // Additional professional checks
+    // Professional checks
     if (email.startsWith('.')) {
       return 'Email should not start with a dot';
     }
-
     if (email.endsWith('.')) {
       return 'Email should not end with a dot';
     }
 
-    return null; // Return null if validation succeeds
+    return null; // valid
   }
+}
 
-  //!=====================================================================
-  static String? validateStrongPassword(String? value) {
+/// Password validation
+extension PasswordValidationX on String? {
+  /// Strong password rules; returns error message or `null` if valid.
+  String? validateStrongPassword() {
+    final value = this;
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
 
-    // Check for minimum length
     if (value.length < 8) {
       return 'Password must be at least 8 characters';
     }
-
-    // Check for uppercase letters
     if (!value.contains(RegExp(r'[A-Z]'))) {
       return 'Password must contain at least one uppercase letter';
     }
-
-    // Check for lowercase letters
     if (!value.contains(RegExp(r'[a-z]'))) {
       return 'Password must contain at least one lowercase letter';
     }
-
-    // Check for numbers
     if (!value.contains(RegExp(r'[0-9]'))) {
       return 'Password must contain at least one number';
     }
-
-    // Check for special characters
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
       return 'Password must contain at least one special character';
     }
 
-    // Check for common passwords (you might want to expand this list)
     final commonPasswords = ['password', '12345678', 'qwerty'];
     if (commonPasswords.contains(value.toLowerCase())) {
       return 'This password is too common';
     }
 
-    return null; // Return null if the password is valid
+    return null;
   }
-  //!=====================================================================
 
-  static String? validatePassword(String? value) {
+  /// Simple required check; returns error message or `null` if non-empty.
+  String? validatePassword() {
+    final value = this;
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
     return null;
   }
-  //!=====================================================================
+}
 
-  String? validatePhoneNumber(String? value) {
+/// Phone number validation
+extension PhoneValidationX on String? {
+  /// Validates length after stripping non-digits; returns error or `null`.
+  String? validatePhoneNumber() {
+    final value = this;
     if (value == null || value.isEmpty) {
       return 'Please enter a phone number';
     }
 
     // Remove all non-digit characters
-    String digitsOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+    final digitsOnly = value.replaceAll(RegExp(r'[^\d]'), '');
 
-    // Check for minimum length (typically 7-15 digits)
     if (digitsOnly.length < 7) {
       return 'Phone number is too short';
     }
-
-    // Check for maximum length
     if (digitsOnly.length > 15) {
       return 'Phone number is too long';
     }
-    return null; // Return null if validation succeeds
+    return null;
   }
-  //!=====================================================================
+}
 
-  static String? validateName(String? value) {
+/// Name / nickname validation
+extension NameValidationX on String? {
+  /// Ensures name is 2..30 chars after trim; returns error or `null`.
+  String? validateName() {
+    final value = this;
     if (value == null || value.isEmpty) {
       return 'Please enter your name or nickname';
     }
 
-    // Trim whitespace from both ends
-    final trimmedValue = value.trim();
+    final trimmed = value.trim();
 
-    // Check minimum length (at least 2 characters)
-    if (trimmedValue.length < 2) {
+    if (trimmed.length < 2) {
       return 'Name is too short (min 2 characters)';
     }
-
-    // Check maximum length (reasonable limit)
-    if (trimmedValue.length > 30) {
+    if (trimmed.length > 30) {
       return 'Name is too long (max 30 characters)';
     }
 
